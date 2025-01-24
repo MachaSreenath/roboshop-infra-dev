@@ -257,23 +257,23 @@ resource "aws_security_group_rule" "user_vpn" {
   security_group_id        = module.user.sg_id
 }
 
-resource "aws_security_group_rule" "user_web" {
-  source_security_group_id = module.web.sg_id
-  type                     = "ingress"
-  from_port                = 8080
-  to_port                  = 8080
-  protocol                 = "tcp"
-  security_group_id        = module.user.sg_id
-}
+# resource "aws_security_group_rule" "user_web" {
+#   source_security_group_id = module.web.sg_id
+#   type                     = "ingress"
+#   from_port                = 8080
+#   to_port                  = 8080
+#   protocol                 = "tcp"
+#   security_group_id        = module.user.sg_id
+# }
 
-resource "aws_security_group_rule" "user_payment" {
-  source_security_group_id = module.payment.sg_id
-  type                     = "ingress"
-  from_port                = 8080
-  to_port                  = 8080
-  protocol                 = "tcp"
-  security_group_id        = module.user.sg_id
-}
+# resource "aws_security_group_rule" "user_payment" {
+#   source_security_group_id = module.payment.sg_id
+#   type                     = "ingress"
+#   from_port                = 8080
+#   to_port                  = 8080
+#   protocol                 = "tcp"
+#   security_group_id        = module.user.sg_id
+# }
 
 resource "aws_security_group_rule" "cart_vpn" {
   source_security_group_id = module.vpn.sg_id
