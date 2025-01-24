@@ -7,10 +7,10 @@ terraform {
   }
 
    backend "s3" {
-    bucket = "forpracticeuno"
+    bucket = "forpracticeuno-dev"
     key    = "vpc"
     region = "us-east-1"
-    dynamodb_table = "forpractice-locking"
+    dynamodb_table = "forpractice-locking-dev"
   }
 }
 
