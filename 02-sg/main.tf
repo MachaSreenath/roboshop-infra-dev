@@ -221,8 +221,17 @@ resource "aws_security_group_rule" "catalogue_vpn" {
   security_group_id        = module.catalogue.sg_id
 }
 
-resource "aws_security_group_rule" "catalogue_web" {
-  source_security_group_id = module.web.sg_id
+# resource "aws_security_group_rule" "catalogue_web" {
+#   source_security_group_id = module.web.sg_id
+#   type                     = "ingress"
+#   from_port                = 8080
+#   to_port                  = 8080
+#   protocol                 = "tcp"
+#   security_group_id        = module.catalogue.sg_id
+# }
+
+resource "aws_security_group_rule" "catalogue_app_alb" {
+  source_security_group_id = module.app_alb.sg_id
   type                     = "ingress"
   from_port                = 8080
   to_port                  = 8080
