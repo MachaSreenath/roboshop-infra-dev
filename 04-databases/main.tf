@@ -1,18 +1,18 @@
 module "mongodb" {
-    source  = "terraform-aws-modules/ec2-instance/aws"
-    ami = data.aws_ami.centos8.id
-    name = "${local.ec2_name}-mongodb"
-    instance_type = "t3.small"
-    vpc_security_group_ids = [data.aws_ssm_parameter.mongodb_sg_id.value]
-    subnet_id = local.database_subnet_id
-    tags = merge(
-      var.common_tags,
-      {
-        Component = "mongodb"
-      },
-      {
-        Name = "${local.ec2_name}-mongodb"
-      }
+  source                 = "terraform-aws-modules/ec2-instance/aws"
+  ami                    = data.aws_ami.centos8.id
+  name                   = "${local.ec2_name}-mongodb"
+  instance_type          = "t3.small"
+  vpc_security_group_ids = [data.aws_ssm_parameter.mongodb_sg_id.value]
+  subnet_id              = local.database_subnet_id
+  tags = merge(
+    var.common_tags,
+    {
+      Component = "mongodb"
+    },
+    {
+      Name = "${local.ec2_name}-mongodb"
+    }
   )
 }
 
@@ -25,14 +25,14 @@ resource "null_resource" "mongodb" {
   # Bootstrap script can run on any instance of the cluster
   # So we just choose the first in this case
   connection {
-    host = module.mongodb.private_ip
-    type = "ssh"
-    user = "centos"
+    host     = module.mongodb.private_ip
+    type     = "ssh"
+    user     = "centos"
     password = "DevOps321"
   }
 
   provisioner "file" {
-    source = "bootstrap.sh"
+    source      = "bootstrap.sh"
     destination = "/tmp/bootstrap.sh"
   }
 
@@ -46,20 +46,20 @@ resource "null_resource" "mongodb" {
 }
 
 module "redis" {
-    source  = "terraform-aws-modules/ec2-instance/aws"
-    ami = data.aws_ami.centos8.id
-    name = "${local.ec2_name}-redis"
-    instance_type = "t2.micro"
-    vpc_security_group_ids = [data.aws_ssm_parameter.redis_sg_id.value]
-    subnet_id = local.database_subnet_id
-    tags = merge(
-      var.common_tags,
-      {
-        Component = "redis"
-      },
-      {
-        Name = "${local.ec2_name}-redis"
-      }
+  source                 = "terraform-aws-modules/ec2-instance/aws"
+  ami                    = data.aws_ami.centos8.id
+  name                   = "${local.ec2_name}-redis"
+  instance_type          = "t2.micro"
+  vpc_security_group_ids = [data.aws_ssm_parameter.redis_sg_id.value]
+  subnet_id              = local.database_subnet_id
+  tags = merge(
+    var.common_tags,
+    {
+      Component = "redis"
+    },
+    {
+      Name = "${local.ec2_name}-redis"
+    }
   )
 }
 
@@ -72,14 +72,14 @@ resource "null_resource" "redis" {
   # Bootstrap script can run on any instance of the cluster
   # So we just choose the first in this case
   connection {
-    host = module.redis.private_ip
-    type = "ssh"
-    user = "centos"
+    host     = module.redis.private_ip
+    type     = "ssh"
+    user     = "centos"
     password = "DevOps321"
   }
 
   provisioner "file" {
-    source = "bootstrap.sh"
+    source      = "bootstrap.sh"
     destination = "/tmp/bootstrap.sh"
   }
 
@@ -88,6 +88,53 @@ resource "null_resource" "redis" {
     inline = [
       "chmod +x /tmp/bootstrap.sh",
       "sudo sh /tmp/bootstrap.sh redis dev"
+    ]
+  }
+}
+
+module "mysql" {
+  source                 = "terraform-aws-modules/ec2-instance/aws"
+  ami                    = data.aws_ami.centos8.id
+  name                   = "${local.ec2_name}-mysql"
+  instance_type          = "t2.micro"
+  vpc_security_group_ids = [data.aws_ssm_parameter.mysql_sg_id.value]
+  subnet_id              = local.database_subnet_id
+  tags = merge(
+    var.common_tags,
+    {
+      Component = "mysql"
+    },
+    {
+      Name = "${local.ec2_name}-mysql"
+    }
+  )
+}
+
+resource "null_resource" "mysql" {
+  # Changes to any instance of the cluster requires re-provisioning
+  triggers = {
+    instance_id = module.mysql.id
+  }
+
+  # Bootstrap script can run on any instance of the cluster
+  # So we just choose the first in this case
+  connection {
+    host     = module.mysql.private_ip
+    type     = "ssh"
+    user     = "centos"
+    password = "DevOps321"
+  }
+
+  provisioner "file" {
+    source      = "bootstrap.sh"
+    destination = "/tmp/bootstrap.sh"
+  }
+
+  provisioner "remote-exec" {
+    # Bootstrap script called with private_ip of each node in the cluster
+    inline = [
+      "chmod +x /tmp/bootstrap.sh",
+      "sudo sh /tmp/bootstrap.sh mysql dev"
     ]
   }
 }
