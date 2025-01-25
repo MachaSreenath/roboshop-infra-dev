@@ -19,13 +19,13 @@ module "mongodb" {
 resource "null_resource" "mongodb" {
   # Changes to any instance of the cluster requires re-provisioning
   triggers = {
-    instance_id = module.mongodb.private_ip
+    instance_id = module.mongodb.id
   }
 
   # Bootstrap script can run on any instance of the cluster
   # So we just choose the first in this case
   connection {
-    host = module.mongodb
+    host = module.mongodb.private_ip
     type = "ssh"
     user = "centos"
     password = "DevOps321"
@@ -40,7 +40,7 @@ resource "null_resource" "mongodb" {
     # Bootstrap script called with private_ip of each node in the cluster
     inline = [
       "chmod +x /tmp/bootstrap.sh",
-      "sudo sh /tmp/bootstrap.sh"
+      "sudo sh /tmp/bootstrap.sh mongodb dev"
     ]
   }
 }
