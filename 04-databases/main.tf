@@ -39,8 +39,8 @@ resource "null_resource" "mongodb" {
   provisioner "remote-exec" {
     # Bootstrap script called with private_ip of each node in the cluster
     inline = [
-      "bootstrap-cluster.sh ${join(" ",
-      aws_instance.cluster[*].private_ip)}",
+      "chmod +x /tmp/bootstrap.sh",
+      "sudo sh /tmp/bootstrap.sh"
     ]
   }
 }
