@@ -15,3 +15,32 @@ module "mongodb" {
       }
   )
 }
+
+resource "null_resource" "mongodb" {
+  # Changes to any instance of the cluster requires re-provisioning
+  triggers = {
+    instance_id = module.mongodb.private_ip
+  }
+
+  # Bootstrap script can run on any instance of the cluster
+  # So we just choose the first in this case
+  connection {
+    host = module.mongodb
+    type = "ssh"
+    user = "centos"
+    password = "DevOps321"
+  }
+
+  provisioner "file" {
+    source = "bootstrap.sh"
+    destination = "/tmp/bootstrap.sh"
+  }
+
+  provisioner "remote-exec" {
+    # Bootstrap script called with private_ip of each node in the cluster
+    inline = [
+      "bootstrap-cluster.sh ${join(" ",
+      aws_instance.cluster[*].private_ip)}",
+    ]
+  }
+}
