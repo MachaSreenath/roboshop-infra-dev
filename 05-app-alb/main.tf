@@ -40,10 +40,8 @@ module "records" {
       type    = "A"
       alias   = {
         name    = aws_lb.app_alb.dns_name
-        zone_id = "ZLY8HYME6SFAD"
+        zone_id = aws_lb.app_alb.zone_id
       }
     }
   ]
-
-  depends_on = [module.zones]
 }
