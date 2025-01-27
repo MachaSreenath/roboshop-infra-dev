@@ -227,6 +227,4 @@ module "records" {
       ]
     },
   ]
-
-  depends_on = [module.zones]
 }
