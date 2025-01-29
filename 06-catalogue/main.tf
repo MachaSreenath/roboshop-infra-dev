@@ -74,25 +74,10 @@ resource "null_resource" "catalogue_delete" {
     instance_id = aws_ami_from_instance.catalogue.id
   }
 
-  # Bootstrap script can run on any instance of the cluster
-  # So we just choose the first in this case
-  connection {
-    host     = module.catalogue.private_ip
-    type     = "ssh"
-    user     = "centos"
-    password = "DevOps321"
-  }
-
-  provisioner "file" {
-    source      = "bootstrap.sh"
-    destination = "/tmp/bootstrap.sh"
-  }
-
-  provisioner "remote-exec" {
+  provisioner "local-exec" {
     # Bootstrap script called with private_ip of each node in the cluster
-    inline = [
-      "chmod +x /tmp/bootstrap.sh",
-      "sudo sh /tmp/bootstrap.sh catalogue dev"
-    ]
+    command = "aws ec2 terminate instances --instance-ids ${module.catalogue.id}"
   }
+
+  depends_on = [ aws_ami_from_instance.catalogue ]
 }
