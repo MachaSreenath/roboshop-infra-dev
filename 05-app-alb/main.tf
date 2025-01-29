@@ -13,6 +13,7 @@ resource "aws_lb" "app_alb" {
   )
 }
 
+# this is for testing that the request is going to the destination correctly or not
 resource "aws_lb_listener" "http" {
   load_balancer_arn = aws_lb.app_alb.arn
   port              = "80"
