@@ -1,6 +1,15 @@
-resource "aws_lb_target_group" "test" {
+resource "aws_lb_target_group" "catalogue" {
   name     = "${local.name}-${var.tags.Component}"
-  port     = 80
+  port     = 8080
   protocol = "HTTP"
-  vpc_id   = aws_vpc.main.id
+  vpc_id   = data.aws_ssm_parameter.vpc_id.value
+  health_check {
+    healthy_threshold   = 2
+    interval            = 10
+    unhealthy_threshold = 3
+    timeout             = 5
+    path                = "/health"
+    port                = 8080
+    matcher             = "200-299"
+  }
 }
