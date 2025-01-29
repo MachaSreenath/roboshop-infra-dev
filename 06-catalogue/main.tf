@@ -79,7 +79,7 @@ resource "null_resource" "catalogue_delete" {
     command = "aws ec2 terminate instances --instance-ids ${module.catalogue.id}"
   }
 
-  depends_on = [ aws_ami_from_instance.catalogue ]
+  depends_on = [ aws_ami_from_instance.catalogue, null_resource.catalogue ]
 }
 
 resource "aws_launch_template" "catalogue" {
