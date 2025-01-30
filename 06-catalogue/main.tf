@@ -133,7 +133,7 @@ resource "aws_autoscaling_group" "catalogue" {
 }
 
 resource "aws_lb_listener_rule" "catalogue" {
-  listener_arn = data.aws_ssm_parameter.app_alb_listener_arn
+  listener_arn = data.aws_ssm_parameter.app_alb_listener_arn.value
   priority = 10
 
   action {
