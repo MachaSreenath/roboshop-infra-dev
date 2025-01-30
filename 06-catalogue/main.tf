@@ -112,6 +112,14 @@ resource "aws_autoscaling_group" "catalogue" {
     version = aws_launch_template.catalogue.latest_version
   }
 
+  instance_refresh {
+    strategy = "Rolling"
+    preferences {
+      min_healthy_percentage = 50
+    }
+    triggers = ["tag"]
+  }
+
   tag {
     key                 = "Name"
     value               = "${local.name}-${var.tags.Component}"
