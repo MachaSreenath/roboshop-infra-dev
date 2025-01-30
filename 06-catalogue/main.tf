@@ -66,7 +66,7 @@ resource "aws_ec2_instance_state" "catalogue" {
 resource "aws_ami_from_instance" "catalogue" {
   name               = "${local.name}-${var.tags.Component}-${local.current_time}"
   source_instance_id = module.catalogue.id
-  depends_on = [ aws_ec2_instance_state.catalogue ]
+  depends_on         = [aws_ec2_instance_state.catalogue]
 }
 
 resource "null_resource" "catalogue_delete" {
@@ -90,11 +90,13 @@ resource "aws_launch_template" "catalogue" {
   instance_initiated_shutdown_behavior = "terminate"
   instance_type                        = "t2.micro"
   vpc_security_group_ids               = [data.aws_ssm_parameter.catalogue_sg_id.value]
+
   tag_specifications {
     resource_type = "instance"
 
-    tags = "${local.name}-${var.tags.Component}"
-
+    tags = {
+      Name = "${local.name}-${var.tags.Component}"
+    }
   }
 }
 
@@ -134,10 +136,10 @@ resource "aws_autoscaling_group" "catalogue" {
 
 resource "aws_lb_listener_rule" "catalogue" {
   listener_arn = data.aws_ssm_parameter.app_alb_listener_arn.value
-  priority = 10
+  priority     = 10
 
   action {
-    type = "forward"
+    type             = "forward"
     target_group_arn = aws_lb_target_group.catalogue.arn
   }
 
@@ -145,5 +147,18 @@ resource "aws_lb_listener_rule" "catalogue" {
     host_header {
       values = ["${var.tags.Component}-app-${var.environment}.${var.zone_name}"]
     }
+  }
+}
+
+resource "aws_autoscaling_policy" "catalogue" {
+  autoscaling_group_name = "${local.name}-${var.tags.Component}"
+  name                   = "${local.name}-${var.tags.Component}"
+  policy_type            = "TargetTrackingScaling"
+
+  target_tracking_configuration {
+    predefined_metric_specification {
+      predefined_metric_type = "ASGAverageCPUUtilization"
+    }
+    target_value = 5.0
   }
 }
