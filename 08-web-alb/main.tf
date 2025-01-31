@@ -12,3 +12,11 @@ resource "aws_lb" "web_alb" {
     var.tags
   )
 }
+
+resource "aws_lb_listener" "https" {
+  load_balancer_arn = aws_lb.web_alb.arn
+  port              = "443"
+  protocol          = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-TLS13-1-2-2021-06"
+  certificate_arn   = data.aws_ssm_parameter.acm_certificate_arn
+}
