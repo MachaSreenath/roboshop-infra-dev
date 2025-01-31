@@ -1,3 +1,3 @@
-resource "aws_route53_zone" "forpractice" {
+data "aws_route53_zone" "forpractice" {
   name = "forpractice.uno"
 }
