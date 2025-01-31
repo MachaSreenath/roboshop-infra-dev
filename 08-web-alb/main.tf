@@ -25,8 +25,25 @@ resource "aws_lb_listener" "https" {
 
     fixed_response {
       content_type = "text/plain"
-      message_body = "This is from WEB ALB usign HTTPS"
+      message_body = "This is from WEB ALB using HTTPS"
       status_code = "200"
     }
   }
+}
+
+module "records" {
+  source  = "terraform-aws-modules/route53/aws//modules/records"
+
+  zone_name = var.zone_name
+
+  records = [
+    {
+      name    = "web-${var.environment}"
+      type    = "A"
+      alias   = {
+        name    = aws_lb.web_alb.dns_name
+        zone_id = aws_lb.web_alb.zone_id
+      }
+    }
+  ]
 }
