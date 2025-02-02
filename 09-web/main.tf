@@ -1,7 +1,7 @@
 resource "aws_lb_target_group" "web" {
   name                 = "${local.name}-${var.tags.Component}"
   port                 = 80
-  protocol             = "HTTPS"
+  protocol             = "HTTP"
   vpc_id               = data.aws_ssm_parameter.vpc_id.value
   deregistration_delay = 60
   health_check {
