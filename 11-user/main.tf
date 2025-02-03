@@ -9,4 +9,5 @@ module "user" {
   common_tags          = var.common_tags
   tags                 = var.tags
   zone_name            = var.zone_name
+  app_alb_listener_arn = data.aws_ssm_parameter.app_alb_listener_arn.value
 }
