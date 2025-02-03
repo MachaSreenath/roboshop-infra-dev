@@ -23,3 +23,8 @@ variable "environment" {
 variable "zone_name" {
   default = "forpractice.uno"
 }
+
+variable "iam_instance_profile" {
+  default = "iamroleforec2creation"
+  
+}
