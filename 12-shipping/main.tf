@@ -1,4 +1,4 @@
-module "user" {
+module "shipping" {
   source               = "../../terraform-roboshop-app"
   vpc_id               = data.aws_ssm_parameter.vpc_id.value
   component_sg_id      = data.aws_ssm_parameter.shipping_sg_id.value
