@@ -165,6 +165,24 @@ resource "aws_security_group_rule" "app_alb_shipping" {
   security_group_id        = module.app_alb.sg_id
 }
 
+resource "aws_security_group_rule" "app_alb_user" {
+  source_security_group_id = module.user.sg_id
+  type                     = "ingress"
+  from_port                = 80
+  to_port                  = 80
+  protocol                 = "tcp"
+  security_group_id        = module.app_alb.sg_id
+}
+
+resource "aws_security_group_rule" "app_alb_catalogue" {
+  source_security_group_id = module.catalogue.sg_id
+  type                     = "ingress"
+  from_port                = 80
+  to_port                  = 80
+  protocol                 = "tcp"
+  security_group_id        = module.app_alb.sg_id
+}
+
 resource "aws_security_group_rule" "app_alb_payment" {
   source_security_group_id = module.payment.sg_id
   type                     = "ingress"
