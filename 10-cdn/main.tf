@@ -14,13 +14,13 @@ resource "aws_cloudfront_distribution" "forpractice" {
 
   #cache behaviour with precedence 0
   ordered_cache_behavior {
-    path_pattern = "/images/*"
-    allowed_methods = ["GET", "HEAD", "OPTIONS"]
-    cached_methods = ["GET", "HEAD", "OPTIONS"]
+    path_pattern     = "/images/*"
+    allowed_methods  = ["GET", "HEAD", "OPTIONS"]
+    cached_methods   = ["GET", "HEAD", "OPTIONS"]
     target_origin_id = "web-${var.environment}.${var.zone_name}"
 
-    cache_policy_id = data.aws_cloudfront_cache_policy.cache.id
-    compress = true
+    cache_policy_id        = data.aws_cloudfront_cache_policy.cache.id
+    compress               = true
     viewer_protocol_policy = "https-only"
   }
 
