@@ -11,6 +11,19 @@ resource "aws_cloudfront_distribution" "forpractice" {
       origin_ssl_protocols   = ["TLSv1.2"]
     }
   }
+
+  #cache behaviour with precedence 0
+  ordered_cache_behavior {
+    path_pattern = "/images/*"
+    allowed_methods = ["GET", "HEAD", "OPTIONS"]
+    cached_methods = ["GET", "HEAD", "OPTIONS"]
+    target_origin_id = "web-${var.environment}.${var.zone_name}"
+
+    cache_policy_id = data.aws_cloudfront_cache_policy.cache.id
+    compress = true
+    viewer_protocol_policy = "https-only"
+  }
+
   default_cache_behavior {
     allowed_methods        = ["GET", "HEAD", "OPTIONS", "PUT", "POST", "PATCH", "DELETE"]
     cached_methods         = ["GET", "HEAD", "OPTIONS"]
