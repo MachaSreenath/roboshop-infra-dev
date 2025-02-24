@@ -8,7 +8,7 @@ pipeline {
         ansiColor('xterm')
     }
     parameters {
-        choice(name: 'action', choices: ['apply', 'destroy'], description: 'Pick something')
+        choice(name: 'action', choices: ['apply', 'destroy'], description: 'Select what you want')
     }
     // build
     stages {
@@ -35,8 +35,8 @@ pipeline {
                 }
             }
             input {
-                message "Should we continue?"
-                ok "Yes, we should."
+                message "Continue?"
+                ok "Yes"
             }
             steps {
                 sh """
@@ -52,8 +52,8 @@ pipeline {
                 }
             }
             input {
-                message "Should we continue?"
-                ok "Yes, we should."
+                message "Continue?"
+                ok "Yes"
             }
             steps {
                 sh """
@@ -66,13 +66,13 @@ pipeline {
     // post build
     post { 
         always { 
-            echo 'I will always say Hello again!'
+            echo 'pipeline fails r success i will execute'
         }
         failure { 
-            echo 'this runs when pipeline is failed, used generally to send some alerts'
+            echo 'pipeline failed'
         }
         success{
-            echo 'I will say Hello when pipeline is success'
+            echo 'pipeline success'
         }
     }
 }
