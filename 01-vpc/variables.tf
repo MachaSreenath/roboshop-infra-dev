@@ -1,11 +1,11 @@
 variable "vpc_cidr" {
-  default = "10.0.0.0/16"
+  default = "10.2.0.0/16"
 }
 
 variable "common_tags" {
   default = {
     Project     = "roboshop"
-    Environment = "dev"
+    Environment = "prod"
     Terraform   = "true"
   }
 }
@@ -19,19 +19,19 @@ variable "project_name" {
 }
 
 variable "environment" {
-  default = "dev2"
+  default = "prod2"
 }
 
 variable "public_subnets_cidr" {
-  default = ["10.0.1.0/24", "10.0.2.0/24"]
+  default = ["10.2.1.0/24", "10.2.2.0/24"]
 }
 
 variable "private_subnets_cidr" {
-  default = ["10.0.11.0/24", "10.0.12.0/24"]
+  default = ["10.2.11.0/24", "10.2.12.0/24"]
 }
 
 variable "database_subnets_cidr" {
-  default = ["10.0.20.0/24", "10.0.30.0/24"]
+  default = ["10.2.20.0/24", "10.2.30.0/24"]
 }
 
 variable "is_peering_required" {
