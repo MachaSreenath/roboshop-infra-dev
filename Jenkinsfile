@@ -65,13 +65,13 @@ pipeline {
     // post build
     post { 
         always { 
-            echo 'I will always say Hello again!'
+            echo 'always saying hello even success of failure'
         }
         failure { 
-            echo 'this runs when pipeline is failed, used generally to send some alerts'
+            echo 'pipeline failed'
         }
         success{
-            echo 'I will say Hello when pipeline is success'
+            echo 'pipeline success'
         }
     }
 }
