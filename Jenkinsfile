@@ -12,7 +12,7 @@ pipeline {
     }
     // build
     stages {
-        stage('VPC') {
+        stage('Vpc') {
             steps {
                 sh """
                     cd 01-vpc
@@ -21,7 +21,7 @@ pipeline {
                 """
             }
         }
-        stage('SG') {
+        stage('sg') {
             steps {
                 sh """
                     cd 02-sg
@@ -30,7 +30,7 @@ pipeline {
                 """
             }
         }
-        stage('VPN') {
+        stage('vpn') {
             steps {
                 sh """
                     cd 03-vpn
@@ -39,7 +39,7 @@ pipeline {
                 """
             }
         }
-        stage('DB ALB'){
+        stage('db alb'){
             parallel{
                 stage('DB') {
                     steps {
@@ -50,7 +50,7 @@ pipeline {
                         """
                     }
                 }
-                stage('ALB') {
+                stage('alb') {
                     steps {
                         sh """
                             cd 05-app-alb
