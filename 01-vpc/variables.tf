@@ -5,7 +5,7 @@ variable "vpc_cidr" {
 variable "common_tags" {
   default = {
     Project     = "roboshop"
-    Environment = "prod"
+    Environment = "dev"
     Terraform   = "true"
   }
 }
@@ -19,7 +19,7 @@ variable "project_name" {
 }
 
 variable "environment" {
-  default = "prod2"
+  default = "dev2"
 }
 
 variable "public_subnets_cidr" {
