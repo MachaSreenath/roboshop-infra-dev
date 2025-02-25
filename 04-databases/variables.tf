@@ -1,7 +1,7 @@
 variable "common_tags" {
   default = {
     Project     = "roboshop"
-    Environment = "dev"
+    Environment = "prod"
     Terraform   = "true"
   }
 }
@@ -11,7 +11,7 @@ variable "project_name" {
 }
 
 variable "environment" {
-  default = "dev"
+  default = "prod"
 }
 
 variable "zone_name" {
